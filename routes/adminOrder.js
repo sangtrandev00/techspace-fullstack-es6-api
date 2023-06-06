@@ -4,6 +4,7 @@ const adminOrderController = require("../controllers/adminOrders");
 const uploadMiddleware = require("../middleware/upload");
 const isAuth = require("../middleware/is-auth");
 const router = express.Router();
+const { check, body } = require("express-validator");
 
 // GET orders
 router.get("/orders", isAuth, adminOrderController.getOrders);

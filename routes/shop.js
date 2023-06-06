@@ -2,6 +2,7 @@ const express = require("express");
 const shopController = require("../controllers/shop");
 const isAuth = require("../middleware/is-auth");
 const router = express.Router();
+const { check, body } = require("express-validator");
 
 // GET PRODUCTS/
 router.get("/products", shopController.getProducts);

@@ -12,7 +12,7 @@ const userSchema = new Schema(
     name: {
       type: String,
       required: true,
-      index: true,
+      // index: true,
     },
     avatar: {
       type: String,
@@ -20,7 +20,7 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
-      required: true,
+      // required: true,
     },
     phone: {
       type: String,
@@ -42,10 +42,10 @@ const userSchema = new Schema(
     resetTokenExpiration: Date,
     loginToken: String,
     loginTokenExpiration: Date,
-    fbUserId: {
-      type: String,
-      default: "",
-    },
+    // fbUserId: {
+    //   type: String,
+    //   default: "",
+    // },
   },
   { timestamps: true }
 );

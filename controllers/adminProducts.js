@@ -3,6 +3,7 @@ const Category = require("../models/Category");
 const Product = require("../models/Product");
 const { deleteFile } = require("../utils/file");
 const product = require("../models/Product");
+const { validationResult } = require("express-validator");
 
 exports.getProducts = async (req, res, next) => {
   try {

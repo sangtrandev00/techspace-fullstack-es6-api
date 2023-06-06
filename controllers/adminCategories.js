@@ -1,6 +1,6 @@
 const Category = require("../models/Category");
 const { deleteFile } = require("../utils/file");
-
+const { validationResult } = require("express-validator");
 exports.getCategories = async (req, res, next) => {
   try {
     const categories = await Category.find();
@@ -40,6 +40,8 @@ exports.getCategory = async (req, res, next) => {
 exports.postCategory = async (req, res, next) => {
   const { name, description } = req.body;
 
+  const errors = validationResult(req);
+
   // if (!req.file) {
   //   const error = new Error("No image provided.");
   //   error.statusCode = 422;
@@ -48,9 +50,16 @@ exports.postCategory = async (req, res, next) => {
 
   // Category: check whether category is already in the database ?
 
-  const imageUrl = req.file ? req.file.path.replace("\\", "/") : "images/user-avatar.jpg";
-
   try {
+    if (!errors.isEmpty()) {
+      console.log("errors: ", errors);
+      // Get the first error
+      const validationError = new Error(errors.errors[0].msg);
+      validationError.statusCode = 422;
+      throw validationError;
+    }
+
+    const imageUrl = req.file ? req.file.path.replace("\\", "/") : "images/user-avatar.jpg";
     const category = new Category({ name, cateImage: imageUrl, description });
     const response = await category.save();
     res.status(201).json({
@@ -77,8 +86,17 @@ exports.updateCategories = async (req, res, next) => {
   //   error.statusCode = 422;
   //   throw error;
   // }
+  const errors = validationResult(req);
 
   try {
+    if (!errors.isEmpty()) {
+      console.log("errors: ", errors);
+      // Get the first error
+      const validationError = new Error(errors.errors[0].msg);
+      validationError.statusCode = 422;
+      throw validationError;
+    }
+
     const currentCategory = await Category.findById(categoryId);
     currentCategory.name = name;
     currentCategory.description = description;
@@ -104,6 +122,7 @@ exports.updateCategories = async (req, res, next) => {
       error.statusCode(422);
       return error;
     }
+    next(error);
   }
 };
 
@@ -127,5 +146,6 @@ exports.deleteCategory = async (req, res, next) => {
       error.statusCode(422);
       return error;
     }
+    next(error);
   }
 };

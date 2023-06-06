@@ -2,6 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const { deleteFile } = require("../utils/file");
 const { faker } = require("@faker-js/faker");
+const { validationResult } = require("express-validator");
 
 exports.getUsers = async (req, res, next) => {
   try {
@@ -171,7 +172,8 @@ exports.deleteUser = async (req, res, next) => {
       userId: userId,
     });
     // Delete avatar image
-    deleteFile(avatar);
+
+    !avatar.startsWith("http") && deleteFile(avatar);
   } catch (error) {
     if (!error) {
       const error = new Error("Failed to fetch categories!");
