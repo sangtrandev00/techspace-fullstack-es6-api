@@ -11,6 +11,7 @@ const mongoose = require("mongoose");
 var admin = require("firebase-admin");
 
 var serviceAccount = require("../firebase/serviceAccountKey.json");
+const { BACKEND_URL } = require("../../frontend/src/constant/backend-domain");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -327,7 +328,7 @@ exports.postReset = async (req, res, next) => {
           subject: "Password reset",
           html: `
             <p>You requested a password reset!</p>
-            <p>Click this <a href="http://localhost:5173/site/reset-password.html?token=${token}">link</a>  to set a new password.</p>
+            <p>Click this <a href=${BACKEND_URL}/site/reset-password.html?token=${token}">link</a>  to set a new password.</p>
           `,
         });
       })
