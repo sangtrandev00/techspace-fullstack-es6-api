@@ -166,6 +166,7 @@ exports.login = async (req, res, next) => {
     userDoc.loginToken = token;
     userDoc.loginTokenExpiration = Date.now() + 60 * 60 * 1000;
     await userDoc.save();
+
     res.status(200).json({
       message: "Login successfuly!",
       token: token,
