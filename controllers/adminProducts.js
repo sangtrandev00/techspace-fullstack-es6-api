@@ -136,6 +136,7 @@ exports.updateProduct = async (req, res, next) => {
   console.log("thumb", thumb);
   const isEmptyFiles = req.files.length === 0;
   const isDifferentImages = imageStrings !== oldImages;
+
   // if (req.files.length > 0) {
   // }
   // console.log("isEmptyFiles", isEmptyFiles);
@@ -155,8 +156,8 @@ exports.updateProduct = async (req, res, next) => {
 
     // Update product follow by that id
     product.name = name;
-    product.oldPrice = oldPrice;
-    product.discount = discount;
+    product.oldPrice = +oldPrice;
+    product.discount = +discount;
     console.log("is difference: ", isDifferentImages);
     console.log("is empty: ", isEmptyFiles);
 
@@ -176,7 +177,7 @@ exports.updateProduct = async (req, res, next) => {
 
     product.shortDesc = shortDesc;
     product.fullDesc = fullDesc;
-    product.stockQty = stockQty;
+    product.stockQty = +stockQty;
     product.categoryId = categoryId;
 
     const response = await product.save();
@@ -210,7 +211,8 @@ exports.deleteProduct = async (req, res, next) => {
 
     res.json({
       message: "Delete product successfully!",
-      product: response,
+      productId: productId,
+      result: response,
     });
 
     // Loop and Delete product images from images folder source

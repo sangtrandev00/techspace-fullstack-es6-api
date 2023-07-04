@@ -36,6 +36,6 @@ router.get("/orders/:orderId", shopController.getOrder);
 
 // GET USER: id
 
-router.get("/users/:userId", isAuth, shopController.getUser);
+router.get("/users/:userId", shopController.getUser);
 
 module.exports = router;

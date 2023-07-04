@@ -18,22 +18,16 @@ router.get("/random-products", adminProductsController.createRandomProducts);
 router.get("/products/:productId", adminProductsController.getProduct);
 
 // POST PRODUCT
-router.post(
-  "/product",
-  uploadMiddleware.array("images[]"),
-  isAuth,
-  adminProductsController.postProduct
-);
+router.post("/product", uploadMiddleware.array("images[]"), adminProductsController.postProduct);
 
 // PUT PRODUCT
 router.put(
   "/product/:productId",
   uploadMiddleware.array("images[]"),
-  isAuth,
   adminProductsController.updateProduct
 );
 
 // DELETE PRODUCT
-router.delete("/products/:productId", isAuth, adminProductsController.deleteProduct);
+router.delete("/products/:productId", adminProductsController.deleteProduct);
 
 module.exports = router;

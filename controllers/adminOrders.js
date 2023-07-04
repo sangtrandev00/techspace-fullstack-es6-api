@@ -171,7 +171,7 @@ exports.updateOrderStatus = async (req, res, next) => {
 
     res.status(200).json({
       message: "Update order status successfully!",
-      order: newOrder,
+      orderId,
     });
   } catch (error) {
     if (!error) {
@@ -192,7 +192,8 @@ exports.deleteOrder = async (req, res, next) => {
 
     res.status(200).json({
       message: "Delete order successfully!",
-      order: response,
+      orderId: orderId,
+      result: response,
     });
   } catch (error) {
     if (!error) {

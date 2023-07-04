@@ -338,11 +338,16 @@ exports.getOrder = async (req, res, next) => {
 exports.getUser = async (req, res, next) => {
   const { userId } = req.params;
 
+  console.log("id: ", userId);
+
   try {
-    const user = await User.findById(userId);
+    const { user } = await User.findById(userId);
+
+    console.log(user);
+
     res.status(200).json({
       message: "fetch single user successfully!",
-      user,
+      user: user,
     });
   } catch (error) {
     if (!error) {
@@ -350,6 +355,7 @@ exports.getUser = async (req, res, next) => {
       error.statusCode(422);
       return error;
     }
+    next(error);
   }
 };
 

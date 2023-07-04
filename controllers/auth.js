@@ -7,11 +7,14 @@ const sendmail = require("../utils/sendmail");
 const passport = require("passport");
 const FacebookStrategy = require("passport-facebook").Strategy;
 const mongoose = require("mongoose");
+const customError = require("../utils/error");
 
 var admin = require("firebase-admin");
 
 var serviceAccount = require("../firebase/serviceAccountKey.json");
-const { BACKEND_URL } = require("../../frontend/src/constant/backend-domain");
+// const { BACKEND_URL } = require("../../frontend/src/constant/backend-domain");
+
+const { BACKEND_URL } = require("../config/backend-domain");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -25,7 +28,7 @@ exports.signup = async (req, res, next) => {
     const user = await User.findOne({ email, providerId });
 
     if (user) {
-      const error = new Error("Email already existed at website!");
+      const error = new customError("email", "Email already existed at website!");
       error.statusCode = 422;
       throw error;
     }
@@ -146,14 +149,14 @@ exports.login = async (req, res, next) => {
     const userDoc = await User.findOne({ email, providerId: "local" });
 
     if (!userDoc) {
-      const error = new Error("Could not find user by email!");
+      const error = new customError("email", "Could not find user by email!");
       error.statusCode = 401;
       throw error;
     }
 
     const isMatched = await bcrypt.compare(password, userDoc.password);
     if (!isMatched) {
-      throw new Error("Password wrong!!!");
+      throw new customError("password", "Password wrong!");
     }
 
     // Create json webtoken here!!!
@@ -187,7 +190,11 @@ exports.adminLogin = async (req, res, next) => {
   try {
     const userDoc = await User.findOne({ email, providerId: "local" });
     if (!userDoc) {
-      const error = new Error("Could not find user by email!");
+      const error = new Error({
+        errorType: "email",
+        message: "Could not find user by email!",
+      });
+
       error.statusCode = 401;
       throw error;
     }
@@ -290,7 +297,7 @@ exports.checkExistingFacebook = async (req, res, next) => {
 // exports.getReset = async (req, res, next) => {};
 
 exports.postReset = async (req, res, next) => {
-  const { email } = req.body;
+  const { email, resetPassUrl } = req.body;
 
   crypto.randomBytes(32, (err, buffer) => {
     if (err) {
@@ -322,13 +329,19 @@ exports.postReset = async (req, res, next) => {
           user: { email, _id },
         });
 
+        const hrefLink = resetPassUrl
+          ? `${resetPassUrl}?token=${token}`
+          : `${BACKEND_URL}/site/reset-password.html?token=${token}`;
+
+        console.log(hrefLink);
+
         sendmail({
           from: "nhatsang0101@gmail.com",
           email: email,
           subject: "Password reset",
           html: `
             <p>You requested a password reset!</p>
-            <p>Click this <a href=${BACKEND_URL}/site/reset-password.html?token=${token}">link</a>  to set a new password.</p>
+            <p>Click this  <a href=${hrefLink}">Link Here</a>  to set a new password.</p>
           `,
         });
       })

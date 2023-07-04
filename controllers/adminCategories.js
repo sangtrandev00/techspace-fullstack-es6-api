@@ -78,7 +78,9 @@ exports.postCategory = async (req, res, next) => {
 };
 
 exports.updateCategories = async (req, res, next) => {
-  const { name, description, oldImage, categoryId } = req.body;
+  const { name, description, oldImage } = req.body;
+
+  const { categoryId } = req.params;
 
   // Handling error when no upload images
   // if (!req.file) {

@@ -50,6 +50,6 @@ router.put(
 );
 
 // DELETE CATE
-router.delete("/categories/:categoryId", isAuth, adminCategoriesController.deleteCategory);
+router.delete("/categories/:categoryId", adminCategoriesController.deleteCategory);
 
 module.exports = router;

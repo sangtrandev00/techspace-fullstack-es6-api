@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const { deleteFile } = require("../utils/file");
 const { faker } = require("@faker-js/faker");
 const { validationResult } = require("express-validator");
+const customError = require("../utils/error");
 
 exports.getUsers = async (req, res, next) => {
   try {
@@ -18,6 +19,7 @@ exports.getUsers = async (req, res, next) => {
       error.statusCode(422);
       return error;
     }
+    next(error);
   }
 };
 
@@ -36,6 +38,7 @@ exports.getUser = async (req, res, next) => {
       error.statusCode(422);
       return error;
     }
+    next(error);
   }
 };
 
@@ -129,7 +132,6 @@ exports.updateUser = async (req, res, next) => {
   console.log("avatar: ", avatar);
 
   try {
-    console.log("get user");
     const currentUser = await User.findById(userId);
     console.log("current user: ", currentUser);
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -180,5 +182,7 @@ exports.deleteUser = async (req, res, next) => {
       error.statusCode(422);
       return error;
     }
+
+    next(error);
   }
 };

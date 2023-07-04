@@ -7,27 +7,27 @@ const router = express.Router();
 const { check, body } = require("express-validator");
 
 // GET USERS
-router.get("/users", isAuth, adminUserController.getUsers);
+router.get("/users", adminUserController.getUsers);
 
 // GET USER
-router.get("/users/:userId", isAuth, adminUserController.getUser);
+router.get("/users/:userId", adminUserController.getUser);
 
 // CREATE RANDOM USER
 
-router.get("/random-users", isAuth, adminUserController.createRandomUser);
+router.get("/random-users", adminUserController.createRandomUser);
 
 // POST USER (What is the order when using middleware like this ? To combine validation )
-router.post("/user", uploadMiddleware.single("avatar"), isAuth, adminUserController.postUser);
+router.post("/user", uploadMiddleware.single("avatar"), adminUserController.postUser);
 
 // PUT CATE
 router.put(
   "/user/:userId",
   uploadMiddleware.single("avatar"),
-  isAuth,
+
   adminUserController.updateUser
 );
 
 // DELETE CATE
-router.delete("/users/:userId", isAuth, adminUserController.deleteUser);
+router.delete("/users/:userId", adminUserController.deleteUser);
 
 module.exports = router;
