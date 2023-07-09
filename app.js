@@ -42,7 +42,7 @@ app.use("/admin", adminUserRouter);
 app.use("/admin", adminOrderRouter);
 app.use(shopRouter);
 
-// Middleware handler error!!!
+// Middleware handler error!!! (custom error here!!!)
 app.use((error, req, res, next) => {
   console.log(error);
 
