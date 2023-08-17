@@ -2,6 +2,8 @@ const Category = require("../models/Category");
 const Product = require("../models/Product");
 const Order = require("../models/Order");
 const User = require("../models/User");
+const mongoose = require("mongoose"); // Erase if already required
+const ObjectId = mongoose.Types.ObjectId;
 // const Category = require('../models/category');
 
 exports.getCategories = async (req, res, next) => {
@@ -76,20 +78,30 @@ exports.getProducts = async (req, res, next) => {
 
   const skip = (+page - 1) * _limit;
 
+  const query = {};
+
   try {
-    const query = {
-      name: regexPattern,
-      // categoryId: {
-      //   $in: categories || allCates,
-      // },
-    };
+    if (_q) {
+      query.name = regexPattern;
+    }
 
     console.log("categories: ", _cateIds);
 
     if (_cateIds) {
+      console.log("cate ids: ", _cateIds.split(","));
+
+      const cateIdsArray = _cateIds
+        .split(",")
+        .filter((id) => id !== "")
+        .map((cateId) => new ObjectId(cateId));
+
+      console.log("cateids array: ", cateIdsArray);
+
       query.categoryId = {
-        $in: _cateIds.split(","),
+        $in: cateIdsArray,
       };
+
+      console.log("Query when have cate: ", query);
     }
 
     if (_min !== undefined || _max !== undefined) {
