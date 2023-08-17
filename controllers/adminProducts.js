@@ -7,7 +7,7 @@ const { validationResult } = require("express-validator");
 
 exports.getProducts = async (req, res, next) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate("categoryId", "_id name cateImage");
     res.status(200).json({
       message: "Fetch all products successfully!",
       products,

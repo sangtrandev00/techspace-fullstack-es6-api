@@ -18,17 +18,17 @@ const categorySchema = new Schema(
       type: String,
       required: true,
     },
-    products: {
-      items: [
-        {
-          productId: {
-            type: Schema.Types.ObjectId,
-            ref: "Product",
-            required: true,
-          },
-        },
-      ],
-    },
+    // products: {
+    //   items: [
+    //     {
+    //       productId: {
+    //         type: Schema.Types.ObjectId,
+    //         ref: "Product",
+    //         required: true,
+    //       },
+    //     },
+    //   ],
+    // },
   },
   { timestamps: true }
 );

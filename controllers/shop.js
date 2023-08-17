@@ -84,6 +84,8 @@ exports.getProducts = async (req, res, next) => {
       // },
     };
 
+    console.log("categories: ", _cateIds);
+
     if (_cateIds) {
       query.categoryId = {
         $in: _cateIds.split(","),

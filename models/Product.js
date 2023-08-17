@@ -33,9 +33,9 @@ const productSchema = new Schema(
       type: Number,
     },
     categoryId: {
-      type: String,
-      // type: Schema.Types.ObjectId,
-      // ref: "Category",
+      // type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Category",
       // required: true,
     },
     views: {

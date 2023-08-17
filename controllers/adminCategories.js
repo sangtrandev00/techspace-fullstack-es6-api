@@ -1,4 +1,5 @@
 const Category = require("../models/Category");
+const Product = require("../models/Product");
 const { deleteFile } = require("../utils/file");
 const { validationResult } = require("express-validator");
 exports.getCategories = async (req, res, next) => {
@@ -6,9 +7,25 @@ exports.getCategories = async (req, res, next) => {
     const categories = await Category.find();
     // console.log("categories: ", categories);
 
+    const result = [];
+
+    for (const cateItem of categories) {
+      const products = await Product.find({ categoryId: cateItem._id });
+
+      const cateTemplate = {
+        _id: cateItem._id,
+        name: cateItem.name,
+        description: cateItem.description,
+        cateImage: cateItem.cateImage,
+        products: products.length,
+      };
+
+      result.push(cateTemplate);
+    }
+
     res.status(200).json({
-      message: "Fetch categories sucessfully!",
-      categories,
+      message: "Fetch all categories sucessfully!",
+      categories: result,
     });
   } catch (error) {
     if (!error) {
