@@ -355,7 +355,7 @@ exports.getUser = async (req, res, next) => {
   console.log("id: ", userId);
 
   try {
-    const { user } = await User.findById(userId);
+    const user = await User.findById(userId);
 
     console.log(user);
 
