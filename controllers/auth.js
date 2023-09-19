@@ -25,7 +25,7 @@ exports.signup = async (req, res, next) => {
 
   //   No validate yet!
   try {
-    const user = await User.findOne({ email, providerId });
+    const user = await User.findOne({ email });
 
     if (user) {
       const error = new customError("email", "Email already existed at website!");
